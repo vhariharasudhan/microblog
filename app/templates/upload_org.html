@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Upload a csv file to analyze</h1>
+    <hr>
+    <form action="" enctype="multipart/form-data" method="POST">
+        {{ form.hidden_tag() }}
+        <p>
+            {{form.csv_file}}
+        </p>
+        <p>
+            {% for error in form.csv_file.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{form.submit()}}
+        </p>
+    </form>
+    <br>
+    <hr>
+    <h2>The organization you have uploaded:</h2>
+    {{ organization }}
+{% endblock %}

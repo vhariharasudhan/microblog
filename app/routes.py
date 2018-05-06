@@ -1,12 +1,14 @@
 import os
+import csv
 from flask import render_template, flash, redirect, url_for, request, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, FileUploadForm
 from app.models import User
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from collections import defaultdict
 
 @app.before_request
 def before_request():
@@ -105,3 +107,19 @@ def edit_profile():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/upload_org', methods=['GET', 'POST'])
+@login_required
+def upload_org():
+    org = defaultdict(list)
+    form = FileUploadForm()
+    if form.validate_on_submit():
+        form.csv_file.data.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(form.csv_file.data.filename)))
+        with open(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(form.csv_file.data.filename))) as input_file:
+            data = csv.reader(input_file)
+
+            for row in data:
+                org[row[1]].append(row[0])
+
+    return render_template('upload_org.html', form=form, organization=org)
+
