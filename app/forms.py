@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, BooleanField, PasswordField, SubmitField, TextAreaField
+from flask_wtf.file import FileAllowed, FileRequired
+from wtforms import StringField, BooleanField, PasswordField, SubmitField, TextAreaField, FileField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.models import User
 from app import app
@@ -33,3 +33,7 @@ class EditProfileForm(FlaskForm):
     about_me = TextAreaField('About me', validators=[Length(min=0, max=140)])
     profile_pic = FileField('Profile photo', validators=[FileAllowed(set(app.config['ALLOWED_EXTENSIONS']))])
     submit = SubmitField('Submit')
+
+class FileUploadForm(FlaskForm):
+    csv_file = FileField('Upload a CSV File', validators=[FileAllowed(['csv'], 'Only csv files are supported'), FileRequired()])
+    submit = SubmitField('Analyze')
