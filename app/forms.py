@@ -37,3 +37,7 @@ class EditProfileForm(FlaskForm):
 class FileUploadForm(FlaskForm):
     csv_file = FileField('Upload a CSV File', validators=[FileAllowed(['csv'], 'Only csv files are supported'), FileRequired()])
     submit = SubmitField('Analyze')
+
+class PostForm(FlaskForm):
+    post = TextAreaField('Say something', validators=[DataRequired(), Length(min=1, max=140)])
+    submit = SubmitField('Submit')

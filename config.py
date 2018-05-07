@@ -9,4 +9,5 @@ class Config(object):
     UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER') or '/Users/vhari/practice/microblog/profile_pics'
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
     MAX_CONTENT_LENGTH = 32 * 1024
+    POSTS_PER_PAGE = 3
 
